@@ -3,10 +3,22 @@ class CardDeck
 
   def initialize
     @cards = cards_generator
+    shuffle
+    shuffle
   end
 
   def view
     @cards.each(&:view)
+  end
+
+  def shuffle
+    @cards.each_with_index do |_card, index|
+      @cards.insert((rand @cards.size), @cards.delete_at(index))
+    end
+  end
+
+  def give_card
+    @cards.shift
   end
 
   private
