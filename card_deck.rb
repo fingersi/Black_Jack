@@ -5,6 +5,10 @@ class CardDeck
     @cards = cards_generator
   end
 
+  def view
+    @cards.each(&:view)
+  end
+
   private
 
   def cards_generator
@@ -13,6 +17,7 @@ class CardDeck
     all_cards = []
     cardline.each do |card|
       simle_suits.each do |suit|
+        puts "Card.new #{card} #{suit}"
         all_cards << Card.new(card, suit)
       end
     end
@@ -26,5 +31,6 @@ class CardDeck
       card_line << card
     end
     %w[J Q K A].each { |card| card_line << card }
+    card_line
   end
 end
