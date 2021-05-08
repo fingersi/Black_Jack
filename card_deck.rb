@@ -17,23 +17,21 @@ class CardDeck
     end
   end
 
-  def give_card
-    @cards.shift
+  def give_cards(number = 1)
+    @cards.shift(number)
   end
 
   private
 
   def cards_generator
-    utf_suit = ['U+2665', 'U+2666', 'U+2663', 'U+2660']
+    # utf_suit = ['U+2665', 'U+2666', 'U+2663', 'U+2660']
     simle_suits = ['<3', '<>', '+', '^']
     all_cards = []
     cardline.each do |card|
       simle_suits.each do |suit|
-        puts "Card.new #{card} #{suit}"
         all_cards << Card.new(card, suit)
       end
     end
-    puts "allcards: #{all_cards}"
     all_cards
   end
 
