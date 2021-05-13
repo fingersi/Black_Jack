@@ -1,15 +1,18 @@
 class Card
-  attr_reader :suit, :type, :point
+  attr_reader :suit, :type, :points
 
-  CARDPOINTS = { 'J' => [10], 'Q' => [10], 'A' => [1, 10] }.freeze
+  CARDPOINTS = { 'J' => [10], 'Q' => [10], 'K' => [10], 'A' => [1, 10] }.freeze
 
   def initialize(point, suit)
     @suit = suit
     card_point_setter(point)
+    # puts "card #{self.methods}"
   end
 
-  def view
-    puts "card #{@view}  #{@suit}"
+  def show(hide)
+    print 'card ' 
+    hide ? (print 'XX') : (print "#{@view}")
+    hide ? (print 'XX') : (print "#{@suit}")
   end
 
   private
