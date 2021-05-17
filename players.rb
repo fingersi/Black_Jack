@@ -19,8 +19,6 @@ class Players
     hide ? (print 'score: XX') : (print "score:#{score}")
   end
 
-  private
-
   def score
     simple_score = simple_points(@cards)
     aces = @cards.select { |card| card.points.size > 1 }
@@ -28,6 +26,8 @@ class Players
 
     best_score(ace_points(aces), simple_score)
   end
+
+  private
 
   def ace_points(aces)
     ace_scores = []
@@ -47,7 +47,7 @@ class Players
                 score = ace_score + simple_points
                 result = score if result < score && score <= 21
               end
-    return result if result.zero?
+    return result unless result.zero?
 
     return results.min 
   end

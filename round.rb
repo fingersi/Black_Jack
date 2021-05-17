@@ -1,78 +1,64 @@
 class Round
+  include Draw
+
   attr_reader :player, :dealer, :carddeck, :bank
 
   def initialize(nickname = 'player')
     @carddeck = CardDeck.new
-    @player = Human.new(@carddeck.give_cards(2), nickname)
+    @player = User.new(@carddeck.give_cards(2), nickname)
     @dealer = Dealer.new(@carddeck.give_cards(2))
+    puts "@player.score #{@player.methods}"
     @bank = @player.bet + @dealer.bet
-    human_turn
+    game
   end
 
   private
 
-  def human_turn
-    draw
-    userinput
+  def game
+    loop do
+      break if send(@player.turn)
+    end
   end
 
-  def userinput
+  def dealer_turn
     loop do
-      puts ''
-      puts 'Select action'
-      puts 'Skip turn press 1'
-      puts 'Add card press 2'
-      puts 'Open cards 3'
-      choise = gets.chomp.to_i
-      case choise
-      when 1
-        dealer_turn
-      when 2
-        @player.add_card(@carddeck.give_a_card)
-        puts "player.cards #{player.cards} "
-        draw
-      when 3
-        open_cards
-      else
-        break
-      end
+      break if @dealer.turn
     end
+  end
+
+  def add_card
+    @player.add_card(@carddeck.give_a_card)
+    check_points?(false)
+    false
   end
 
   def open_cards
-
+    draw(false)
+    check_points(true)
   end
 
-  def draw(hide = true)
-    header
-    view_cards(hide)
-    view_score(hide)
-  end
-
-  def view_cards(hide)
-    index = 0
-    [@player.cards.size, @dealer.cards.size].max.times do
-      @player.cards[index]&.show(false)
-      gap(23)
-      @dealer.cards[index]&.show(hide)
-      puts ''
-      index += 1
+  def check_points?(ends)
+    summary = game_end? 
+    if summary['game_ends'] || ends == true
+      summary['text']
+      return true
     end
+    false
   end
 
-  def view_score(hide)
-    @player.view_score(false)
-    gap(20)
-    @dealer.view_score(hide)
+  def game_end?
+    return game_hash(true, 'Dealer wins') if @player.score > 21 && @dealer.score <= 21
+
+    return game_hash(true, 'Player wins') if (@player.score > @dealer.score) && @player.score <= 21
+
+    return game_hash(true, 'Player wins') if @dealer.score > 21 && @player.score <= 21
+
+    return game_hash(true, 'Dealer wins') if (@player.score > @dealer.score) && @player.score <= 21
+
+    game_hash(false, text => '')
   end
 
-  def gap(times)
-    times.times { print ' '}
-  end
-
-  def header
-    print 'Players cards'
-    gap(15)
-    puts 'Dealer cards'
+  def game_hash(game_ends, text)
+    { 'game_ends' => game_ends, text => text }
   end
 end

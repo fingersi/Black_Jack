@@ -1,10 +1,16 @@
+require_relative 'draw'
 require_relative 'card_deck'
 require_relative 'card'
 require_relative 'players'
-require_relative 'human'
+require_relative 'user'
 require_relative 'dealer'
 require_relative 'round'
 
-cd = CardDeck.new
+round = Round.new
+print "cd #{round}"
 
-print "cd #{cd}"
+puts "round.methods #{round.player.methods}"
+
+
+
+
