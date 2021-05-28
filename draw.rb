@@ -1,9 +1,12 @@
 module Draw
-  def draw(hide = true)
+  def draw(hide)
+    puts
+    puts "draw #{hide}"
     header
     view_cards(hide)
+    puts
     view_score(hide)
-    check_points
+    puts
   end
 
   def view_cards(hide)
@@ -33,10 +36,11 @@ module Draw
     puts 'Dealer cards'
   end
 
-  def game_summary(text)
+  def game_summary(player)
+    puts 'game summary'
     draw(false)
     gap(10)
-    print text
-  end 
-
+    puts "game_summary player nick name #{player.nickname}"
+    player.nickname.nil? ? (puts 'Tie Game') : (puts "#{player.nickname} wins" )
+  end
 end

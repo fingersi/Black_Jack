@@ -1,9 +1,10 @@
 class Players
-  attr_reader :cards, :balance
+  attr_reader :cards, :balance, :nickname
 
-  def initialize(cards)
+  def initialize(cards, nickname)
     @cards = cards
     @balance = 100
+    @nickname = nickname
   end
 
   def add_card(card)
@@ -15,6 +16,10 @@ class Players
     10
   end
 
+  def cash_back(money)
+    @balance += money
+  end
+
   def view_score(hide)
     hide ? (print 'score: XX') : (print "score:#{score}")
   end
@@ -22,6 +27,8 @@ class Players
   def score
     simple_score = simple_points(@cards)
     aces = @cards.select { |card| card.points.size > 1 }
+    puts "player score aces.size.zero?: #{aces.size.zero?}"
+    puts "simple_score #{simple_score}"
     return simple_score if aces.size.zero?
 
     best_score(ace_points(aces), simple_score)
@@ -41,7 +48,7 @@ class Players
     ace_scores
   end
 
-  def best_score(scores, simple_points)t = 
+  def best_score(scores, simple_points) 
     result = 0
     results = scores.map do |ace_score|
                 score = ace_score + simple_points

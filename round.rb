@@ -7,7 +7,6 @@ class Round
     @carddeck = CardDeck.new
     @player = User.new(@carddeck.give_cards(2), nickname)
     @dealer = Dealer.new(@carddeck.give_cards(2))
-    puts "@player.score #{@player.methods}"
     @bank = @player.bet + @dealer.bet
     game
   end
@@ -15,50 +14,76 @@ class Round
   private
 
   def game
-    loop do
-      break if send(@player.turn)
-    end
+    draw(true)
+    send(@player.turn)
   end
 
   def dealer_turn
     loop do
-      break if @dealer.turn
+      @dealer.turn ? add_card(@dealer) : break
     end
+    open_cards
   end
 
-  def add_card
-    @player.add_card(@carddeck.give_a_card)
-    check_points?(false)
+  def player_add_card
+    puts 'player_add_card'
+    add_card(@player)
+    # game
+  end
+
+  def add_card(player)
+    puts 'add_card'
+    player.add_card(@carddeck.give_a_card)
+    check_points?
     false
   end
 
   def open_cards
-    draw(false)
-    check_points(true)
+    game_end(winner)
   end
 
-  def check_points?(ends)
-    summary = game_end? 
-    if summary['game_ends'] || ends == true
-      summary['text']
+  def check_points?
+    winner_player = too_much
+    puts "check_points? winner_player:#{winner_player}"
+    if winner_player != false
+      game_end(winner_player)
       return true
     end
     false
   end
 
-  def game_end?
-    return game_hash(true, 'Dealer wins') if @player.score > 21 && @dealer.score <= 21
-
-    return game_hash(true, 'Player wins') if (@player.score > @dealer.score) && @player.score <= 21
-
-    return game_hash(true, 'Player wins') if @dealer.score > 21 && @player.score <= 21
-
-    return game_hash(true, 'Dealer wins') if (@player.score > @dealer.score) && @player.score <= 21
-
-    game_hash(false, text => '')
+  def game_end(winner_player)
+    game_summary(winner_player)
+    bet = @bank / 2
+    if winner_player == false
+      @player.cash_back(bet)
+      @dealer.cash_back(bet)
+    else
+      winner_player.cash_back(@bank)
+    end
+    puts " @player.balance #{@player.balance} "
+    puts " @dealer.balance #{@dealer.balance} "
+    @bank = 0
   end
 
-  def game_hash(game_ends, text)
-    { 'game_ends' => game_ends, text => text }
+  def too_much
+    puts 'too_much'
+    draw(false)
+    puts
+    puts
+    return @dealer if (@player.score) > 21
+
+    return @player if (@dealer.score) >= 21
+
+    false
   end
+
+  def winner
+    return @player if @player.score > @dealer.score
+
+    return @dealer if @dealer.score > @player.score
+
+    return nil if @dealer.score == @player.score
+  end
+
 end

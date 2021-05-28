@@ -2,8 +2,7 @@ class User < Players
   attr_reader :nickname
 
   def initialize(cards, nickname)
-    super(cards)
-    @nickname = nickname
+    super(cards, nickname)
   end
 
   def turn
@@ -17,7 +16,7 @@ class User < Players
     when 1
       'dealer_turn'
     when 2
-      'add_card'
+      'player_add_card'
     when 3
       'open_cards'
     end

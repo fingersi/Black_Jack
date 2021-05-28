@@ -7,10 +7,6 @@ require_relative 'dealer'
 require_relative 'round'
 
 round = Round.new
-print "cd #{round}"
-
-puts "round.methods #{round.player.methods}"
-
 
 
 
