@@ -1,10 +1,9 @@
 class Dealer < Players
-  def initialize(cards)
-    super(cards, 'Dealer')
+  def initialize
+    super('dealer')
   end
 
   def turn
-    puts "dealer turn score: #{score}"
     return true if score <= 17
 
     false

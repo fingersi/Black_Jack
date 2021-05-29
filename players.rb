@@ -1,14 +1,22 @@
 class Players
   attr_reader :cards, :balance, :nickname
 
-  def initialize(cards, nickname)
-    @cards = cards
+  def initialize(nickname)
+    @cards = []
     @balance = 100
     @nickname = nickname
   end
 
   def add_card(card)
-    @cards << card
+    @cards << card 
+  end
+
+  def new_cards(cards)
+    @cards = []
+    cards.each do |cart|
+      puts cart
+      @cards << cart
+    end
   end
 
   def bet
@@ -27,8 +35,7 @@ class Players
   def score
     simple_score = simple_points(@cards)
     aces = @cards.select { |card| card.points.size > 1 }
-    puts "player score aces.size.zero?: #{aces.size.zero?}"
-    puts "simple_score #{simple_score}"
+    puts " aces.size.zero? #{aces.size.zero?}"
     return simple_score if aces.size.zero?
 
     best_score(ace_points(aces), simple_score)
@@ -45,18 +52,20 @@ class Players
       end
       ace_scores << ace_score
     end
+    puts "ace_scores: #{ace_scores}"
     ace_scores
   end
 
-  def best_score(scores, simple_points) 
+  def best_score(scores, simple_points)
     result = 0
     results = scores.map do |ace_score|
                 score = ace_score + simple_points
                 result = score if result < score && score <= 21
               end
+    puts "best_score #{results}"
     return result unless result.zero?
 
-    return results.min 
+    results.min
   end
 
   def simple_points(cards)

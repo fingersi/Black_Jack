@@ -1,10 +1,10 @@
 class User < Players
   attr_reader :nickname
-
-  def initialize(cards, nickname)
-    super(cards, nickname)
+=begin
+  def initialize(nickname)
+    super(nickname)
   end
-
+=end
   def turn
     puts ''
     puts 'Select action'

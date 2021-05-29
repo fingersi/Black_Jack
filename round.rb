@@ -3,17 +3,19 @@ class Round
 
   attr_reader :player, :dealer, :carddeck, :bank
 
-  def initialize(nickname = 'player')
+  def initialize(player, dealer)
     @carddeck = CardDeck.new
-    @player = User.new(@carddeck.give_cards(2), nickname)
-    @dealer = Dealer.new(@carddeck.give_cards(2))
+    @player = player
+    @dealer = dealer
     @bank = @player.bet + @dealer.bet
-    game
+    @player.new_cards(@carddeck.give_cards(2))
+    @dealer.new_cards(@carddeck.give_cards(2))
+    play
   end
 
   private
 
-  def game
+  def play
     draw(true)
     send(@player.turn)
   end
@@ -26,16 +28,13 @@ class Round
   end
 
   def player_add_card
-    puts 'player_add_card'
     add_card(@player)
-    # game
+    play unless check_points?
   end
 
   def add_card(player)
-    puts 'add_card'
     player.add_card(@carddeck.give_a_card)
     check_points?
-    false
   end
 
   def open_cards
@@ -44,7 +43,6 @@ class Round
 
   def check_points?
     winner_player = too_much
-    puts "check_points? winner_player:#{winner_player}"
     if winner_player != false
       game_end(winner_player)
       return true
@@ -67,7 +65,6 @@ class Round
   end
 
   def too_much
-    puts 'too_much'
     draw(false)
     puts
     puts
@@ -79,11 +76,12 @@ class Round
   end
 
   def winner
+    return too_much if too_much
+
     return @player if @player.score > @dealer.score
 
     return @dealer if @dealer.score > @player.score
 
     return nil if @dealer.score == @player.score
   end
-
 end

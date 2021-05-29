@@ -40,7 +40,6 @@ module Draw
     puts 'game summary'
     draw(false)
     gap(10)
-    puts "game_summary player nick name #{player.nickname}"
-    player.nickname.nil? ? (puts 'Tie Game') : (puts "#{player.nickname} wins" )
+    player.nickname.nil? ? (puts 'Tie Game') : (puts "#{player.nickname} wins")
   end
 end
