@@ -4,7 +4,6 @@ class CardDeck
   def initialize
     @cards = cards_generator
     3.times { shuffle }
-    # view
   end
 
   def view
@@ -16,13 +15,6 @@ class CardDeck
       @cards.insert((rand @cards.size), @cards.delete_at(index))
     end
   end
-=begin
-  def give_cards(number = 1)
-    cards = []
-    number.times { cards << Card.new('A', '<>') }
-    cards
-  end
-=end
 
   def give_cards(number = 1)
     @cards.shift(number)

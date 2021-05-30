@@ -24,7 +24,7 @@ class Round
     loop do
       @dealer.turn ? add_card(@dealer) : break
     end
-    open_cards
+    play unless too_much
   end
 
   def player_add_card

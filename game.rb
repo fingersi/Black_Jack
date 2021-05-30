@@ -38,9 +38,7 @@ class Game
 
   def input_nickname
     puts 'Enter your name'
-    nickname = gets.chomp
-    puts "nickname #{nickname}"
-    nickname
+    gets.chomp
   end
 
   def play_again

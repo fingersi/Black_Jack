@@ -6,7 +6,7 @@ class MainMenu
 
   MAINMENU = { '1' => { 'action' => 'new_game', 'text' => 'Start new game' },
                '2' => { 'action' => 'hi_score', 'text' => 'Hi score' },
-               '0' => { 'action' => 'Exit', 'text' => 'break' } }.freeze
+               '0' => { 'action' => 'exit', 'text' => 'quit' } }.freeze
 
   def show_menu
     puts ''
@@ -52,5 +52,9 @@ class MainMenu
 
   def intro
     puts 'Welcome to Black Jack game'
+  end
+
+  def exit
+    puts 'bye bye'
   end
 end

@@ -11,9 +11,9 @@ module Draw
   def view_cards(hide)
     index = 0
     [@player.cards.size, @dealer.cards.size].max.times do
-      @player.cards[index]&.show(false)
-      gap(20)
-      @dealer.cards[index]&.show(hide)
+      @player.cards[index].nil? ? 11.times { print ' ' } : @player.cards[index]&.show(false)
+      gap(18)
+      @dealer.cards[index].nil? ? 11.times { print ' ' } : @dealer.cards[index]&.show(hide)
       puts ''
       index += 1
     end
@@ -36,9 +36,11 @@ module Draw
   end
 
   def game_summary(player)
-    puts 'game summary'
+    puts 'Game summary.'
     draw(false)
+    puts
     gap(10)
     player.is_a?(Players) ? (puts "#{player.nickname} wins") : (puts 'Tie Game')
+    puts
   end
 end
