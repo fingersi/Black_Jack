@@ -8,7 +8,9 @@ class Game
   def game
     loop do
       start_new_round
+      puts
       puts "Player has #{@player.wins} wins. "
+      puts
       break if game_ends
 
       break if play_again

@@ -3,7 +3,7 @@ class Players
 
   def initialize(nickname)
     @cards = []
-    @balance = 20
+    @balance = 100
     @nickname = nickname
   end
 
@@ -39,13 +39,12 @@ class Players
   end
 
   def view_score(hide)
-    hide ? (print 'score: XX') : (print "score:#{score}")
+    hide ? (print 'score: XX') : (print "score: #{score}")
   end
 
   def score
     simple_score = simple_points(@cards)
     aces = @cards.select { |card| card.points.size > 1 }
-    puts " aces.size.zero? #{aces.size.zero?}"
     return simple_score if aces.size.zero?
 
     best_score(ace_points(aces), simple_score)
@@ -70,7 +69,6 @@ class Players
       end
       ace_scores << ace_score
     end
-    puts "ace_scores: #{ace_scores}"
     ace_scores
   end
 

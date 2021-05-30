@@ -52,7 +52,6 @@ class Round
   def game_end(winner_player)
     game_summary(winner_player)
     bet = @bank / 2
-    puts "winner_player #{winner_player}"
     if winner_player == false
       @player.cash_back(bet)
       @dealer.cash_back(bet)
@@ -60,8 +59,8 @@ class Round
       winner_player&.win
       winner_player.cash_back(@bank)
     end
-    puts " @player.balance #{@player.balance} "
-    puts " @dealer.balance #{@dealer.balance} "
+    puts " Player balance: #{@player.balance} "
+    puts " Dealer balance: #{@dealer.balance} "
     @bank = 0
   end
 

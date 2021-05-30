@@ -12,7 +12,7 @@ module Draw
     index = 0
     [@player.cards.size, @dealer.cards.size].max.times do
       @player.cards[index]&.show(false)
-      gap(23)
+      gap(20)
       @dealer.cards[index]&.show(hide)
       puts ''
       index += 1
