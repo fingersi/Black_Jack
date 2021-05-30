@@ -3,12 +3,22 @@ class Players
 
   def initialize(nickname)
     @cards = []
-    @balance = 100
+    @balance = 20
     @nickname = nickname
   end
 
+  def self.win
+    @wins ||= 0
+    @wins += 1
+  end
+
+  def self.wins
+    @wins ||= 0
+    @wins
+  end
+
   def add_card(card)
-    @cards << card 
+    @cards << card
   end
 
   def new_cards(cards)
@@ -41,6 +51,14 @@ class Players
     best_score(ace_points(aces), simple_score)
   end
 
+  def win
+    self.class.win
+  end
+
+  def wins
+    self.class.wins
+  end
+
   private
 
   def ace_points(aces)
@@ -58,11 +76,12 @@ class Players
 
   def best_score(scores, simple_points)
     result = 0
-    results = scores.map do |ace_score|
-                score = ace_score + simple_points
-                result = score if result < score && score <= 21
-              end
-    puts "best_score #{results}"
+    results = []
+    scores.each do |ace_score|
+      score = ace_score + simple_points
+      results << score
+      result = score if result < score && score <= 21
+    end
     return result unless result.zero?
 
     results.min

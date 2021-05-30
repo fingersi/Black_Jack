@@ -1,7 +1,6 @@
 module Draw
   def draw(hide)
     puts
-    puts "draw #{hide}"
     header
     view_cards(hide)
     puts
@@ -40,6 +39,6 @@ module Draw
     puts 'game summary'
     draw(false)
     gap(10)
-    player.nickname.nil? ? (puts 'Tie Game') : (puts "#{player.nickname} wins")
+    player.is_a?(Players) ? (puts "#{player.nickname} wins") : (puts 'Tie Game')
   end
 end

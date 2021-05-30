@@ -28,8 +28,7 @@ class Round
   end
 
   def player_add_card
-    add_card(@player)
-    play unless check_points?
+    play unless add_card(@player)
   end
 
   def add_card(player)
@@ -53,10 +52,12 @@ class Round
   def game_end(winner_player)
     game_summary(winner_player)
     bet = @bank / 2
+    puts "winner_player #{winner_player}"
     if winner_player == false
       @player.cash_back(bet)
       @dealer.cash_back(bet)
     else
+      winner_player&.win
       winner_player.cash_back(@bank)
     end
     puts " @player.balance #{@player.balance} "
@@ -64,24 +65,26 @@ class Round
     @bank = 0
   end
 
+  def tie_game
+    true if @dealer.score == @player.score
+  end
+
   def too_much
-    draw(false)
-    puts
-    puts
     return @dealer if (@player.score) > 21
 
-    return @player if (@dealer.score) >= 21
+    return @player if (@dealer.score) > 21
 
     false
   end
 
   def winner
+    draw(false)
     return too_much if too_much
 
     return @player if @player.score > @dealer.score
 
     return @dealer if @dealer.score > @player.score
 
-    return nil if @dealer.score == @player.score
+    return false if @dealer.score == @player.score
   end
 end

@@ -47,7 +47,7 @@ class MainMenu
   end
 
   def hi_score
-    puts 'hi score'
+    HiScore.view_scores
   end
 
   def intro
