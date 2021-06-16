@@ -1,4 +1,4 @@
-class Players
+class Player
   attr_reader :cards, :balance, :nickname
 
   def initialize(nickname)
@@ -24,7 +24,6 @@ class Players
   def new_cards(cards)
     @cards = []
     cards.each do |cart|
-      puts cart
       @cards << cart
     end
   end
@@ -36,10 +35,6 @@ class Players
 
   def cash_back(money)
     @balance += money
-  end
-
-  def view_score(hide)
-    hide ? (print 'score: XX') : (print "score: #{score}")
   end
 
   def score

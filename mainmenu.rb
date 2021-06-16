@@ -43,7 +43,7 @@ class MainMenu
   end
 
   def new_game
-    Game.new
+    Interface.new
   end
 
   def hi_score

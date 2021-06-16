@@ -1,5 +1,5 @@
 class Card
-  attr_reader :suit, :type, :points
+  attr_reader :suit, :type, :points, :view
 
   CARDPOINTS = { 'J' => [10], 'Q' => [10], 'K' => [10], 'A' => [1, 10] }.freeze
 
@@ -14,8 +14,12 @@ class Card
     print view
     card_view_size(view)
     hide ? (suit = 'XX') : (suit = @suit)
-    print suit
+    print suit.encode('utf-8')
     card_view_size(suit)
+  end
+
+  def for_view
+    {suit: @suit, view: @view}
   end
 
   private

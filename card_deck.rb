@@ -27,11 +27,11 @@ class CardDeck
   private
 
   def cards_generator
-    # utf_suit = ['U+2665', 'U+2666', 'U+2663', 'U+2660']
-    simle_suits = ['<3', '<>', '+', '^']
+    utf_suits = ["\u2665", "\u2666", "\u2663", "\u2660"]
+    # simle_suits = ['<3', '<>', '+', '^']
     all_cards = []
     cardline.each do |card|
-      simle_suits.each do |suit|
+      utf_suits.each do |suit|
         all_cards << Card.new(card, suit)
       end
     end
