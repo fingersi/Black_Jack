@@ -36,7 +36,7 @@ class Interface
   end
 
   def action
-    draw(true) if @game.status == :user_turn
+    draw if @game.status == :user_turn
     @game.round
   end
 
@@ -44,7 +44,6 @@ class Interface
     @game.round
     round_summary(@game.status)
     view_balance
-    puts "game_ends?  : #{game_ends?}"
     if game_ends?
 
       @game.game_winner
@@ -110,6 +109,6 @@ class Interface
   end
 
   def draw_it
-    draw(true)
+    draw
   end
 end

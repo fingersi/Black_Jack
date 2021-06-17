@@ -8,18 +8,8 @@ class Card
     card_point_setter(point)
   end
 
-  def show(hide)
-    print 'card '
-    hide ? (view = 'XX') : (view = @view)
-    print view
-    card_view_size(view)
-    hide ? (suit = 'XX') : (suit = @suit)
-    print suit.encode('utf-8')
-    card_view_size(suit)
-  end
-
   def for_view
-    {suit: @suit, view: @view}
+    { suit: @suit, view: @view }
   end
 
   private

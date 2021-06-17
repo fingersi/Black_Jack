@@ -1,70 +1,71 @@
 module Draw
-  def draw(hide)
+  def draw
     puts
     header
-    view_cards(hide)
+    view_cards
     puts
-    view_scores(hide)
+    view_scores
     puts
-  end
-=begin
-  def view_cards(hide)
-    index = 0
-    [@player.cards.size, @dealer.cards.size].max.times do
-      @player.cards[index].nil? ? 11.times { print ' ' } : @player.cards[index]&.show(false)
-      gap(18)
-      @dealer.cards[index].nil? ? 11.times { print ' ' } : @dealer.cards[index]&.show(hide)
-      index += 1
-    end
-  end
-=end
-
-  def view_scores(hide)
-    puts "score: #{@game.player.score}"
-    hide ? (print 'score: XX') : (print "score: #{@game.dealer.score}")
   end
 
-  def view_cards(hide)
-    index = 0
-    [@game.player.cards.size, @game.dealer.cards.size].max.times do
-      draw_2_cards(@game.player.cards[index], @game.dealer.cards[index], hide)
-      index += 1
+  def view_scores
+    scores = @game.scores
+    puts "Player score: #{scores[:player]}"
+    puts "Dealer score: #{scores[:dealer]}"
+  end
+
+  def view_cards
+    @game.cards.each do |cards|
+      draw_2_cards(cards[0], cards[1])
     end
   end
 
-  def draw_2_cards(player_card, dealer_card, hide)
-    print_card_cap(player_card.nil?, dealer_card.nil?)
-    # puts " player_card&.suit || dealer_card&.suit : #{player_card&.suit.nil? || dealer_card&.suit.nil?}"
-    card_part((player_card&.suit.nil? ? nil : '  '), (dealer_card&.suit.nil? ? nil : '  '))
-    card_part(player_card&.suit, hide_or_skip(hide, dealer_card&.suit))
-    card_part(player_card&.view, hide_or_skip(hide, dealer_card&.view))
-    card_part((player_card&.suit.nil? ? nil : '  '), (dealer_card&.suit.nil? ? nil : '  '))
-    print_card_cap(player_card.nil?, dealer_card.nil?)
+  def draw_2_cards(player_card, dealer_card)
+    print_card_cap(player_card, dealer_card)
+    view_card_gap(player_card, dealer_card)
+    view_card_suit(player_card, dealer_card)
+    view_card_score(player_card, dealer_card)
+    view_card_gap(player_card, dealer_card)
+    print_card_cap(player_card, dealer_card)
   end
 
-  def hide_or_skip(hide, info)
-    return nil if info.nil?
+  def view_card_score(card1, card2)
+    card_part(card1.nil? ? nil : card1[:view], card2.nil? ? nil : card2[:view])
+  end
 
-    hide ? 'XX' : info
+  def view_card_suit(card1, card2)
+    card_part(card1.nil? ? nil : card1[:suit], card2.nil? ? nil : card2[:suit])
+  end
+
+  def view_card_gap(card1, card2)
+    card_part(card1.nil? ? nil : ' ', card2.nil? ? nil : ' ')
   end
 
   def print_card_cap(no_player_card, no_dealer_card)
     gap(3)
-    no_player_card ? (6.times { print ' ' }) : (6.times { print '-' })
+    no_player_card.nil? ? (6.times { print ' ' }) : (6.times { print '-' })
     gap(20)
-    no_dealer_card ? (6.times { print ' ' }) : 6.times { print '-' }
+    no_dealer_card.nil? ? (6.times { print ' ' }) : 6.times { print '-' }
     puts
   end
 
   def card_part(card1, card2)
     gap(3)
-    print '| ' unless card1.nil?
-    view_suit(card1) unless card1.nil?
-    print ' |' unless card1.nil?
+    if card1.nil?
+      gap(6)
+    else
+      print '| '
+      view_suit(card1)
+      print ' |'
+    end
     gap(20)
-    print '| ' unless card2.nil?
-    view_suit(card2) unless card2.nil?
-    print ' |' unless card2.nil?
+    if card2.nil?
+      gap(6)
+    else
+      print '| '
+      view_suit(card2)
+      print ' |'
+    end
     puts
   end
 
@@ -86,7 +87,7 @@ module Draw
 
   def round_summary(status)
     puts
-    draw(false)
+    draw
     puts
     gap(10)
     status != 'tie' ? (puts status) : (puts 'Tie Game')
@@ -95,7 +96,7 @@ module Draw
 
   def game_summary
     puts
-    puts "#{@winner&.nickname} wins the game!"
+    puts "#{@game.winner&.nickname} wins the game!"
     puts
     view_balance
   end

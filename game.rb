@@ -83,7 +83,41 @@ class Game
     @winner = 'tie' if @player.balance == @dealer.balance
   end
 
+  def cards
+    case @status
+    when *ROUND_END_STATUS
+      cards_for_view(false)
+    else
+      cards_for_view(true)
+    end
+  end
+
+  def scores
+    case @status
+    when *ROUND_END_STATUS
+      { player: @player.score, dealer: @dealer.score }
+    else
+      { player: @player.score, dealer: 'XX' }
+    end
+  end
+
   private
+
+  def cards_for_view(hide)
+    cards = []
+    index = 0
+    [@player.cards.size, @dealer.cards.size].max.times do
+      cards << [@player.cards[index]&.for_view, hide_or_skip(hide, @dealer.cards[index]&.for_view)]
+      index += 1
+    end
+    cards
+  end
+
+  def hide_or_skip(hide, card)
+    return nil if card.nil?
+
+    hide ? { suit: 'XX', view: 'XX' } : card
+  end
 
   def check_balance
     if @player.balance <= 0
@@ -127,9 +161,9 @@ class Game
   end
 
   def too_much
-    return 'dealer_win' if (@player.score) > 21
+    return :dealer_win if (@player.score) > 21
 
-    return 'player_win' if (@dealer.score) > 21
+    return :player_win if (@dealer.score) > 21
 
     false
   end
